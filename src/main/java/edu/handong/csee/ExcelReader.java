@@ -31,7 +31,7 @@ public class ExcelReader  {
 		String[] combineSummary = new String[7];
 		ArrayList<String> lines = new ArrayList();
 		Util util = new Util();
-	 String headerofSummary = "제목,요약문(300자 내외),핵심어(keyword,쉼표로 구분),조회날짜,실제자료조회 출저(웹자료링크),원출저(기관명 등),제작자(Copyright,소유처)";
+	 String headerofSummary = "제목,요약문(300자 내외),핵심어(keyword,쉼표로 구분),조회날짜,실제자료조회 출저(웹자료링크),원출저(기관명 등),제작자(Copyright.소유처)";
 	if(!headerSummary) {
 		lines.add(headerofSummary);
 		headerSummary = true;
@@ -110,18 +110,20 @@ public class ExcelReader  {
 		String refer;
 		String copyright;
 		  String line = null;
+		  
+		  
 		if(!original[0].contains("false")) {
 			 title = original[0];
-		        summery = "\""+original[1].trim()+"\"";
-		        keyword ="\""+ original[2].trim().replaceAll("\r", "")+"\"";
-		        date = "\""+original[3].trim()+"\"";
-		        web = "\""+original[4].trim()+"\"";
-		        refer = "\""+original[5].trim()+"\"";
-		        copyright ="\""+ original[6].trim()+"\"";
-		        
+		        summery =original[1].trim().replace("\"", " ");
+		        keyword =original[2].trim();
+		        date =original[3].trim();
+		        web = original[4].trim();
+		        refer = original[5].trim();
+		        copyright =original[6].trim();
+		       System.out.println(keyword);
 				//System.out.println(summery);
-		    line = Id+","
-		    		+title+ ","+ summery+  ","+keyword +  ","+date + ","+ web +  ","+refer +  ","+copyright ;
+		    line = "\""+Id+"\""+","+"\""+title+ "\""+","+ "\""+summery+ "\""+ ","+"\""+keyword +"\""+  
+		    		","+"\""+date +"\""+ ","+"\""+ web + "\""+ ","+"\""+refer + "\""+ ","+"\""+copyright+"\"" ;
 		}
        
 	    return line;
@@ -217,18 +219,19 @@ public class ExcelReader  {
 		if(!original[0].contains("false")) {
 				title = original[0];
 	
-		        table = "\""+original[1].trim()+"\"";
-		        type ="\""+ original[2].trim().replaceAll("\r", "")+"\"";
-		        explain = "\""+original[3].trim()+"\"";
-		        page = "\""+original[4].trim()+"\"";
-		    line = Id+","+title+ ","+ table+ ","+type + ","+explain + ","+ page ;
+		        table = original[1].trim();
+		        type = original[2].trim();
+		        explain =original[3].trim();
+		        page = original[4].trim();
+		    line = "\""+Id+"\""+","+"\""+title+ "\""+","+"\""+ table+ "\""+","+"\""+type +"\""+ ","+"\""+explain + "\""+","+ "\""+page+"\"";
 		}else {
 			
-	        table = "\""+original[1].trim()+"\"";
-	        type ="\""+ original[2].trim().replaceAll("\r", "")+"\"";
-	        explain = "\""+original[3].trim()+"\"";
-	        page = "\""+original[4].trim()+"\"";
-	        line = Id+","+""+ ","+ table+","+type + ","+explain + ","+ page ;
+	        table = original[1].trim();
+	        type =original[2].trim();
+	        explain = original[3].trim();
+	        page =original[4].trim();
+	        line = "\""+Id+"\""+","+"\""+" "+ "\""+","+"\""+ table+ "\""+","+"\""+type +"\""+ ","+"\""+explain + "\""+","+ "\""+page+"\"";
+	    	
 	
 		}
        
