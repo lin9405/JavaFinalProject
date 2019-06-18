@@ -15,23 +15,10 @@ import java.io.*;
 
 public class Runner {
 	
-	String input;
-	String output;
-	String analysis;
-	String course;
-	String startYear;
-	String endYear;
-	
-	
-	boolean help;
-	
-
 	public static void main(String[] args) {
 		CLIOption myRunner = new CLIOption();
-		
 		myRunner.run(args);
 		
-
 	}
 }
 

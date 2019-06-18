@@ -1,72 +1,62 @@
 
 package edu.handong.csee;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
+import java.util.*;
+import java.io.*;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 
-public class ZipReader {
-/*
-	public static void main(String[] args) {
-		ZipReader zipReader = new ZipReader();
-		zipReader.run(args);
-	}
-
-	private void run(String[] args) {
-		//String path = args[0];
-		
-		readFileInZip("data");
-		
-	}
-	*/
-
-	public void readFileInZip(String path) {
-		ZipFile zipFile;
-		/*
-		try {
-			zipFile = new ZipFile(path);
-			Enumeration<? extends ZipArchiveEntry> entries = zipFile.getEntries();
-
-	System.out.println(entries);
+public class ZipReader  {
 	
-		    while(entries.hasMoreElements()){
-		    	ZipArchiveEntry entry = entries.nextElement();
-		        InputStream stream = zipFile.getInputStream(entry);
-		     String name=   zipFile.getEncoding();
-		     
-		     System.out.println(name);
-		      //  System.out.println(stream);
-		        ExcelReader myReader = new ExcelReader();
-		        
-		        for(String value:myReader.getData(stream)) {
-		        
-		      //  	System.out.println(value);
-		        }
-		    }
-		} 
+	ArrayList<String> fileName = new ArrayList<>();
+	ArrayList<Integer> zipSort = new ArrayList<>();
+	public void run(String input, String output) {
+
+		File dir = new File(input);
+		File[] fileList = dir.listFiles();
+
+		for (int i = 0; i < fileList.length; i++) {
+			File file = fileList[i];
+			if (file.isFile()) {
+				fileName.add(file.getName());
+			} else if (file.isDirectory()) {
+			}
+		}
 		
-		*/
-	try {
-		zipFile = new ZipFile(path);
+		Iterator it = fileName.iterator();
+		while (it.hasNext()) {
+			String value = (String) it.next();
+			System.out.println(value);
 
-		Enumeration<? extends ZipArchiveEntry> entries = zipFile.getEntries();
-
-		while(entries.hasMoreElements()){
-			ZipArchiveEntry entry = entries.nextElement();
-		    if(entry.isDirectory()){
-		        System.out.println("dir  : " + entry.getName());
-		    } else {
-		        System.out.println("file : " + entry.getName());
-		    }
+			String[] a = value.split(".zip");
+			int sortzip = Integer.parseInt(a[0]);
+			int[] sortArray = new int[5];
+			zipSort.add(sortzip);
+			Collections.sort(zipSort);
+		}
+		ArrayList<Thread> threadReader = new ArrayList<>();
+		ArrayList<String> finalPath =new ArrayList<>();
+		ArrayList<Thread> threadZip = new ArrayList<Thread>();
+		String Id = null;
+		for (int a : zipSort) {
+			Id =String.format("%04d", a);
+			String b = (input+"/" +Id+".zip");
+			finalPath.add(b);
+		}	
+		
+		for(String zipPath : finalPath) {
+			Thread thread= new Thread(new ReadFileInZip(zipPath,output));
+			thread.start();
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+			
+				e.printStackTrace();
+			}
+			threadZip.add(thread);
 		}
 		
 	}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 }

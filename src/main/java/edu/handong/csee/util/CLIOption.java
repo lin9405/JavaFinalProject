@@ -1,4 +1,5 @@
 package edu.handong.csee.util;
+import edu.handong.csee.ZipReader;
 
 import org.apache.commons.cli.CommandLine;
 
@@ -7,6 +8,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+
+
 import java.io.*;
 
 public class CLIOption {
@@ -29,8 +32,10 @@ public class CLIOption {
 				printHelp(options);
 				return;
 			}
-			System.out.println(input+"\n"+output+"\n");
+			ZipReader zipReader = new ZipReader();
+			String[] outPath = output.split(".csv");
 			
+			zipReader.run(input, outPath[0]);
 		}
 	}
 
@@ -47,7 +52,7 @@ public class CLIOption {
 
 		} catch (Exception e) {
 			printHelp(options);
-			System.out.println("??");
+		
 			return false;
 		}
 
